@@ -1,90 +1,225 @@
 [
   {
-    "source": "sample_inputs/sample.txt",
+    "source": "sample_inputs\\sample.txt",
     "source_type": "txt",
     "chunk_index": 0,
     "total_chunks": 1,
-    "token_count": 687,
-    "summary": "Artificial intelligence is rapidly transforming industries such as healthcare, finance, transportation, and education, driven by breakthroughs from companies like OpenAI, Google DeepMind, and Anthropic. While AI offers significant benefits—from improved medical diagnosis to personalized learning—it also raises serious ethical and regulatory concerns, including algorithmic bias, labor displacement, and existential risks. Governments and organizations worldwide are responding with legislation such as the EU AI Act and increased investment in AI research and governance.",
+    "token_count": 703,
+    "summary": "Artificial intelligence is transforming industries worldwide, from healthcare and finance to transportation and education, with companies like OpenAI, Google DeepMind, and Anthropic leading the charge. AI systems are being used to diagnose diseases, detect fraud, and develop autonomous vehicles, but also raise concerns about existential risks, algorithmic bias, and job displacement. Despite these challenges, optimism about AI's potential remains high, with researchers pushing the frontiers of what AI can achieve.",
     "entities": {
-      "people": ["Elon Musk"],
-      "places": ["New York", "London", "Mumbai", "San Francisco", "Phoenix", "Singapore", "Finland", "South Korea", "Beijing", "Washington D.C.", "Oxford"],
-      "organizations": ["OpenAI", "Google DeepMind", "Anthropic", "Johns Hopkins Hospital", "Mayo Clinic", "JPMorgan Chase", "Goldman Sachs", "BlackRock", "Tesla", "Waymo", "Uber", "Khan Academy", "Duolingo", "Future of Humanity Institute", "Baidu", "Alibaba", "Tencent", "AI Now Institute", "Electronic Frontier Foundation", "MIT", "Stanford University", "Carnegie Mellon University"]
+      "people": [
+        "Elon Musk"
+      ],
+      "places": [
+        "New York",
+        "London",
+        "Mumbai",
+        "San Francisco",
+        "Phoenix",
+        "Singapore",
+        "Finland",
+        "South Korea",
+        "United States",
+        "China",
+        "Washington D.C.",
+        "Europe",
+        "North America",
+        "Beijing"
+      ],
+      "organizations": [
+        "OpenAI",
+        "Google DeepMind",
+        "Anthropic",
+        "Johns Hopkins Hospital",
+        "Mayo Clinic",
+        "JPMorgan Chase",
+        "Goldman Sachs",
+        "BlackRock",
+        "New York Stock Exchange",
+        "Tesla",
+        "Waymo",
+        "Uber",
+        "Khan Academy",
+        "Duolingo",
+        "National Highway Traffic Safety Administration",
+        "Future of Humanity Institute",
+        "University of Oxford",
+        "European Union",
+        "Baidu",
+        "Alibaba",
+        "Tencent",
+        "AI Now Institute",
+        "Electronic Frontier Foundation",
+        "MIT",
+        "Stanford University",
+        "Carnegie Mellon University"
+      ]
     },
     "sentiment": {
       "label": "neutral",
-      "confidence": 0.78
+      "confidence": 0.7
     },
     "questions": [
-      "How should governments balance AI innovation with regulation to prevent harm while fostering economic growth?",
-      "What concrete measures can organizations take to address algorithmic bias and ensure AI systems are equitable?",
-      "How will the global AI competition between the United States and China shape international relations and technological standards over the next decade?"
+      "What are the potential applications of artificial intelligence in various industries?",
+      "How are companies like OpenAI, Google DeepMind, and Anthropic contributing to the development of AI?",
+      "What are the potential risks and challenges associated with the rise of AI?"
     ]
   },
   {
     "source": "https://en.wikipedia.org/wiki/Artificial_intelligence",
     "source_type": "url",
     "chunk_index": 0,
-    "total_chunks": 3,
-    "token_count": 1987,
-    "summary": "Artificial intelligence is the simulation of human intelligence processes by machines, encompassing capabilities such as learning, reasoning, problem-solving, perception, and language understanding. The field was founded as an academic discipline in the 1950s and has since experienced cycles of optimism, funding cuts known as 'AI winters,' and major revivals driven by advances in computing power and data availability. Modern AI includes narrow AI systems specialized for specific tasks and broader research toward artificial general intelligence.",
+    "total_chunks": 26,
+    "token_count": 2000,
+    "summary": "Artificial intelligence (AI) is the capability of computational systems to perform tasks typically associated with human intelligence, such as problem-solving and decision-making. AI research includes learning, knowledge representation, and natural language processing, with applications in web search engines, strategy games, and image generation. The field has gone through cycles of optimism and disappointment, but has seen significant growth and advances in recent years.",
     "entities": {
-      "people": ["Alan Turing", "John McCarthy", "Marvin Minsky", "Geoffrey Hinton", "Yann LeCun"],
-      "places": ["Dartmouth", "United States", "United Kingdom"],
-      "organizations": ["Google", "Microsoft", "IBM", "DeepMind", "OpenAI"]
+      "people": [],
+      "places": [],
+      "organizations": [
+        "Meta",
+        "OpenAI",
+        "Google",
+        "Wikipedia"
+      ]
     },
     "sentiment": {
       "label": "neutral",
-      "confidence": 0.85
+      "confidence": 0.8
     },
     "questions": [
-      "What distinguishes modern deep learning approaches from earlier symbolic AI methods, and why did the latter fall short?",
-      "How close are researchers to achieving artificial general intelligence, and what technical milestones remain?",
-      "What are the societal implications of increasingly capable AI systems for employment and human autonomy?"
+      "What are the main goals of artificial intelligence research?",
+      "How has the field of artificial intelligence evolved over time?",
+      "What are some of the potential risks and challenges associated with the development of artificial intelligence?"
     ]
   },
   {
     "source": "https://en.wikipedia.org/wiki/Artificial_intelligence",
     "source_type": "url",
     "chunk_index": 1,
-    "total_chunks": 3,
-    "token_count": 1823,
-    "summary": "AI applications span a wide range of domains including natural language processing, computer vision, robotics, and game playing, with landmark achievements such as Deep Blue defeating Garry Kasparov in chess and AlphaGo defeating Lee Sedol in Go. Machine learning, and particularly deep learning with neural networks, has become the dominant paradigm, enabling AI systems to learn patterns from large datasets without explicit programming. These advances have powered consumer products like virtual assistants, recommendation systems, and autonomous vehicles.",
+    "total_chunks": 26,
+    "token_count": 2000,
+    "summary": "The text discusses various types of machine learning, including classification, regression, and reinforcement learning, as well as natural language processing and machine perception. It also touches on affective computing, social intelligence, and general intelligence. The text highlights the use of techniques such as search and optimization, local search, and formal logic in AI research.",
     "entities": {
-      "people": ["Garry Kasparov", "Lee Sedol"],
+      "people": [
+        "Noam Chomsky",
+        "Margaret Masterman"
+      ],
       "places": [],
-      "organizations": ["IBM", "Google DeepMind", "Nvidia"]
+      "organizations": []
     },
     "sentiment": {
-      "label": "positive",
-      "confidence": 0.72
+      "label": "neutral",
+      "confidence": 0.8
     },
     "questions": [
-      "How do reinforcement learning techniques used in games like Go translate to real-world decision-making problems?",
-      "What data privacy risks arise from training large AI models on massive internet datasets?",
-      "To what extent should AI systems be explainable, and who bears responsibility when they make harmful errors?"
+      "What are the main types of machine learning?",
+      "How does natural language processing work?",
+      "What is the goal of affective computing?"
+    ]
+  },
+  {
+    "source": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+    "source_type": "url",
+    "chunk_index": 2,
+    "total_chunks": 26,
+    "token_count": 2000,
+    "summary": "The text discusses various artificial intelligence techniques, including machine learning, deep learning, and neural networks, and their applications in areas such as image processing, natural language processing, and computer vision. It also touches on the use of large language models like GPT and their limitations. The text highlights the importance of training data and computational power in the development of AI systems.",
+    "entities": {
+      "people": [],
+      "places": [],
+      "organizations": [
+        "Google",
+        "Meta AI"
+      ]
+    },
+    "sentiment": {
+      "label": "neutral",
+      "confidence": 0.8
+    },
+    "questions": [
+      "What are the main types of artificial intelligence applications?",
+      "How do neural networks learn to model complex relationships between inputs and outputs?",
+      "What are the limitations of large language models like GPT?"
     ]
   },
   {
     "source": "https://en.wikipedia.org/wiki/Machine_learning",
     "source_type": "url",
     "chunk_index": 0,
-    "total_chunks": 2,
-    "token_count": 1956,
-    "summary": "Machine learning is a subset of artificial intelligence that enables computer systems to improve their performance on tasks through experience without being explicitly programmed. It encompasses supervised learning, unsupervised learning, and reinforcement learning, each suited to different types of problems and data availability. The availability of large datasets and powerful GPU hardware has fueled its rapid growth and application across science, business, and government.",
+    "total_chunks": 15,
+    "token_count": 2000,
+    "summary": "Machine learning is a field of study concerned with the development and study of statistical algorithms that can learn from data, generalize to unseen data, and perform tasks without explicit programming language instructions. The field has advanced significantly with the development of deep learning, which has allowed neural networks to surpass many previous machine learning approaches in performance. The history of machine learning roots back to decades of human desire and effort to study human cognitive processes.",
     "entities": {
-      "people": ["Arthur Samuel", "Tom Mitchell"],
+      "people": [
+        "Donald Hebb",
+        "Walter Pitts",
+        "Warren McCulloch"
+      ],
       "places": [],
-      "organizations": ["Google", "Facebook", "Amazon", "Apple", "Microsoft"]
+      "organizations": [
+        "IBM",
+        "Raytheon Company"
+      ]
     },
     "sentiment": {
-      "label": "positive",
-      "confidence": 0.69
+      "label": "neutral",
+      "confidence": 0.8
     },
     "questions": [
-      "What are the key differences between supervised and unsupervised learning, and when should each be used?",
-      "How do overfitting and underfitting affect the reliability of machine learning models in production?",
-      "What ethical considerations should guide the deployment of machine learning systems in high-stakes domains like criminal justice?"
+      "What is machine learning and how does it work?",
+      "What are the key applications of machine learning?",
+      "How has the field of machine learning evolved over time?"
+    ]
+  },
+  {
+    "source": "https://en.wikipedia.org/wiki/Machine_learning",
+    "source_type": "url",
+    "chunk_index": 1,
+    "total_chunks": 15,
+    "token_count": 2000,
+    "summary": "Machine learning grew out of the quest for artificial intelligence and has since become its own field, focusing on practical problems and statistical methods. It has a close connection to data compression, and techniques like k-means clustering and large language models are used for efficient data compression. Machine learning and data mining overlap significantly, but have different goals, with machine learning focusing on prediction and data mining on discovery of unknown properties.",
+    "entities": {
+      "people": [
+        "John Hopfield",
+        "David Rumelhart",
+        "Geoffrey Hinton"
+      ],
+      "places": [],
+      "organizations": [
+        "NVIDIA",
+        "DeepMind"
+      ]
+    },
+    "sentiment": {
+      "label": "neutral",
+      "confidence": 0.8
+    },
+    "questions": [
+      "What is the relationship between machine learning and artificial intelligence?",
+      "How does machine learning relate to data compression?",
+      "What are some examples of AI-powered compression software?"
+    ]
+  },
+  {
+    "source": "https://en.wikipedia.org/wiki/Machine_learning",
+    "source_type": "url",
+    "chunk_index": 2,
+    "total_chunks": 15,
+    "token_count": 2000,
+    "summary": "Machine learning is a field of study that gives computers the ability to learn without being explicitly programmed. It involves training a model on a dataset to make predictions or decisions on new, unseen data. The goal is to enable the model to generalize well and make accurate predictions.",
+    "entities": {
+      "people": [],
+      "places": [],
+      "organizations": []
+    },
+    "sentiment": {
+      "label": "neutral",
+      "confidence": 0.8
+    },
+    "questions": [
+      "What is the main goal of machine learning?",
+      "How does supervised learning differ from unsupervised learning?",
+      "What are some common applications of unsupervised machine learning?"
     ]
   }
 ]

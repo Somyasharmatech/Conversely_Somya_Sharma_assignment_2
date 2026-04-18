@@ -1,30 +1,30 @@
 # LLM Integration & Data Pipeline
 
-A modular Python CLI application that ingests unstructured text from `.txt`/`.pdf` files and URLs, processes it through Google Gemini, and outputs structured JSON, CSV, and a plain-text summary report.
+A modular Python CLI application that ingests unstructured text from `.txt`/`.pdf` files and URLs, processes it through the **Groq API** (llama-3.3-70b-versatile), and outputs structured JSON, CSV/Excel, and a plain-text summary report.
 
 ---
 
 ## Features
 
 - **Multi-source ingestion**: `.txt` files, `.pdf` files, and web URLs in a single run
-- **Smart preprocessing**: encoding repair, boilerplate removal, token-aware chunking
-- **Structured LLM extraction** via Gemini API (no LangChain):
+- **Smart preprocessing**: encoding repair, boilerplate removal, token-aware chunking (tiktoken)
+- **Structured LLM extraction** via Groq API (no LangChain):
   - 2–3 sentence summary
   - Named entities (people, places, organizations)
-  - Sentiment with confidence score
+  - Sentiment with confidence score (0.0–1.0)
   - 3 important questions the text raises
-- **Robust error handling**: retry with exponential backoff (tenacity), malformed JSON repair, per-input failure isolation
-- **Dual output**: `results.json` + `results.csv/xlsx` + `summary_report.txt`
+- **Robust error handling**: retry with exponential backoff (tenacity), malformed JSON regex repair, per-input failure isolation — pipeline never crashes on a single bad input
+- **Three output formats**: `results.json` + `results.csv` + `results.xlsx` + `summary_report.txt`
 - **Full logging** to both console and `pipeline.log`
 
 ---
 
-## LLM Choice: Google Gemini (gemini-1.5-flash)
+## LLM Choice: Groq API (llama-3.3-70b-versatile)
 
-- **Free tier** available via `google-generativeai` SDK
-- **Native JSON mode** (`response_mime_type="application/json"`) makes structured output highly reliable
-- **Large context window** (1M tokens) minimises unnecessary chunking
-- **Speed**: flash variant is fast enough for pipeline throughput
+- **Free tier**: 14,400 requests/day, 6,000 tokens/min — no billing required
+- **JSON mode** (`response_format={"type": "json_object"}`) enforces structured output
+- **Low latency**: Groq's LPU hardware processes tokens ~10× faster than typical LLM APIs
+- **No regional restrictions**: works reliably worldwide
 
 ---
 
@@ -40,14 +40,14 @@ pip install -r requirements.txt
 
 ### 2. Configure your API key
 
-Copy `.env.example` to `.env` and fill in your Gemini API key:
+Copy `.env.example` to `.env` and fill in your Groq API key:
 
 ```bash
 cp .env.example .env
-# Edit .env and set GEMINI_API_KEY=<your key>
+# Edit .env: GROQ_API_KEY=gsk_...
 ```
 
-Get a free API key at: https://aistudio.google.com/
+Get a free key at: **https://console.groq.com/keys** (sign in with Google, no credit card)
 
 ---
 
@@ -61,20 +61,22 @@ python main.py --file sample_inputs/sample.txt --urls sample_inputs/urls.txt --o
 
 | Argument | Description |
 |---|---|
-| `--file` | Path to a `.txt` or `.pdf` file to process |
-| `--urls` | Path to a text file containing one URL per line |
-| `--output` | Directory to write output files (default: `output/`) |
+| `--file` | Path to a `.txt` or `.pdf` file |
+| `--urls` | Path to a text file with one URL per line |
+| `--output` | Output directory (default: `output/`) |
+| `--max-chunks` | Max chunks per source (default: `3`; use `0` for unlimited) |
 
-### Example
+### Example — run on sample inputs
 
 ```bash
 python main.py --file sample_inputs/sample.txt --urls sample_inputs/urls.txt
 ```
 
 Outputs written to `output/`:
-- `results.json` — all extracted data
-- `results.csv` — one row per chunk (Excel-compatible)
-- `summary_report.txt` — aggregated findings
+- `results.json` — all extracted data (one object per chunk)
+- `results.csv` — flat table, one row per chunk (Excel-compatible UTF-8)
+- `results.xlsx` — same data as Excel workbook
+- `summary_report.txt` — aggregated findings across all inputs
 
 Logs written to `pipeline.log`.
 
@@ -85,23 +87,23 @@ Logs written to `pipeline.log`.
 ```
 ├── main.py                    # CLI entry point & pipeline orchestrator
 ├── ingestion/
-│   ├── file_ingestor.py       # .txt and .pdf ingestion
-│   └── url_ingestor.py        # URL fetch + HTML parsing
+│   ├── file_ingestor.py       # .txt (chardet auto-encoding) + .pdf (pypdf)
+│   └── url_ingestor.py        # URL fetch + HTML parsing (requests + BeautifulSoup)
 ├── preprocessing/
-│   └── cleaner.py             # Text cleaning + token-aware chunking
+│   └── cleaner.py             # Unicode normalization, boilerplate removal, tiktoken chunking
 ├── llm/
-│   ├── client.py              # Gemini API client (reads key from env)
-│   └── extractor.py           # Prompt, structured extraction, retry logic
+│   ├── client.py              # Groq client setup (reads GROQ_API_KEY from env only)
+│   └── extractor.py           # Prompt, JSON extraction, retry logic, JSON repair
 ├── storage/
 │   ├── json_writer.py         # Writes results.json
-│   ├── csv_writer.py          # Writes results.csv via pandas
+│   ├── csv_writer.py          # Writes results.csv + results.xlsx (pandas)
 │   └── report_writer.py       # Writes summary_report.txt
 ├── utils/
-│   └── logger.py              # Logging configuration
+│   └── logger.py              # Dual logging (console + pipeline.log)
 ├── sample_inputs/
-│   ├── sample.txt             # Sample document
-│   └── urls.txt               # Sample URL list
-├── sample_outputs/            # Pre-generated sample outputs
+│   ├── sample.txt             # Sample AI/technology article
+│   └── urls.txt               # 2 Wikipedia URLs + 1 broken URL (for failure demo)
+├── sample_outputs/            # Real outputs from a pipeline run
 │   ├── results.json
 │   ├── results.csv
 │   └── summary_report.txt
@@ -113,28 +115,30 @@ Logs written to `pipeline.log`.
 
 ## Design Decisions
 
-1. **No orchestration libraries**: All API calls use the `google-generativeai` SDK directly.
-2. **Tenacity for retries**: Exponential backoff (1–60s) with 5 attempts. Retries on `Exception` subclasses that indicate transient failures (rate limits, timeouts, server errors).
-3. **Malformed JSON handling**: First attempts `json.loads()`, then falls back to regex extraction of the JSON block, then logs and skips the chunk.
-4. **Pipeline isolation**: Each chunk/URL is wrapped in its own try/except. A failure in one never crashes the whole pipeline.
-5. **Token-aware chunking**: `tiktoken` (cl100k_base) counts tokens; chunks target ≤2000 tokens with 200-token overlap.
-6. **Encoding repair**: `chardet` detects file encoding; HTML entities and non-ASCII are normalized before processing.
+1. **No orchestration libraries**: All API calls use the `groq` SDK directly — no LangChain, LlamaIndex, etc.
+2. **Tenacity for retries**: Exponential backoff (2→4→8→16→32s, capped at 60s) with 5 max attempts. Retries on all `Exception` subclasses covering rate limits, timeouts, and server errors.
+3. **Malformed JSON handling**: First attempts `json.loads()`, then falls back to regex extraction of the JSON block (`{...}`), then logs and skips the chunk. Never crashes.
+4. **Pipeline isolation**: Each chunk is wrapped in its own `try/except`. One bad input never stops the rest.
+5. **Token-aware chunking**: `tiktoken` (cl100k_base) counts tokens; chunks target ≤ 2,000 tokens with 200-token overlap to maintain context.
+6. **Encoding repair**: `chardet` detects file encoding; unicode normalised to NFC; control characters removed; smart quotes replaced.
+7. **Rate-limit guard**: 5-second sleep between LLM requests to stay comfortably under the 30 req/min per-project limit.
 
 ---
 
 ## Tested Inputs
 
-- `sample_inputs/sample.txt` — multi-topic article about AI and technology
-- `sample_inputs/urls.txt` containing:
-  - `https://en.wikipedia.org/wiki/Artificial_intelligence`
-  - `https://www.bbc.com/news/technology`
-  - `https://broken-url-that-does-not-exist.xyz` (intentionally broken to test failure handling)
+| Input | Type | Result |
+|---|---|---|
+| `sample_inputs/sample.txt` | TXT file | 1 chunk, extracted successfully |
+| `https://en.wikipedia.org/wiki/Artificial_intelligence` | URL | 26 chunks detected, 3 processed |
+| `https://en.wikipedia.org/wiki/Machine_learning` | URL | 15 chunks detected, 3 processed |
+| `https://this-url-does-not-exist-xyz-12345.com/broken` | Broken URL | Logged as ERROR, skipped gracefully |
 
 ---
 
 ## Known Limitations
 
-- PDF extraction may lose formatting from scanned/image-based PDFs (no OCR)
-- Very large files are chunked but each chunk is processed independently (no cross-chunk context)
-- Rate limits depend on your Gemini API tier; free tier allows ~15 req/min
-- JavaScript-rendered web pages are not supported (uses `requests`, not a headless browser)
+- PDF extraction may miss text in scanned/image-based PDFs (no OCR support)
+- Very large files are chunked but each chunk is processed independently (no cross-chunk memory)
+- JavaScript-rendered pages are not supported (uses `requests`, not a headless browser)
+- Free tier: 30 req/min on Groq; the 5s inter-chunk delay keeps the pipeline within limits

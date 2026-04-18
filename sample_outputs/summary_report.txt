@@ -5,95 +5,85 @@
 OVERVIEW
 ----------------------------------------
 Total sources processed : 3
-Total chunks extracted  : 4
-Failed sources          : 1
+Total chunks extracted  : 7
+Failed sources          : 0
 
 SENTIMENT DISTRIBUTION
 ----------------------------------------
-  Positive  :    2 chunks  (50.0%)
-  Neutral   :    2 chunks  (50.0%)
+  Positive  :    0 chunks  (0.0%)
+  Neutral   :    7 chunks  (100.0%)
   Negative  :    0 chunks  (0.0%)
 
 TOP ENTITIES (across all sources)
 ----------------------------------------
-  People        : Elon Musk, Alan Turing, John McCarthy, Garry Kasparov, Lee Sedol, Arthur Samuel, Tom Mitchell, Marvin Minsky, Geoffrey Hinton, Yann LeCun
-  Places        : New York, London, Mumbai, San Francisco, Dartmouth, United States, United Kingdom, Oxford
-  Organizations : OpenAI, Google DeepMind, IBM, Microsoft, Google, DeepMind, Anthropic, Tesla, Waymo, Nvidia
+  People        : Elon Musk, Noam Chomsky, Margaret Masterman, Donald Hebb, Walter Pitts, Warren McCulloch, John Hopfield, David Rumelhart, Geoffrey Hinton
+  Places        : New York, London, Mumbai, San Francisco, Phoenix, Singapore, Finland, South Korea, United States, China
+  Organizations : OpenAI, Google, Google DeepMind, Anthropic, Johns Hopkins Hospital, Mayo Clinic, JPMorgan Chase, Goldman Sachs, BlackRock, New York Stock Exchange
 
 ========================================================================
 PER-SOURCE DETAILS
 ========================================================================
 
-SOURCE: sample_inputs/sample.txt
+SOURCE: https://en.wikipedia.org/wiki/Artificial_intelligence
+  Type   : url
+  Chunks : 3
+  Dominant sentiment: neutral
+  Summary (chunk 0):
+    Artificial intelligence (AI) is the capability of computational
+    systems to perform tasks typically associated with human
+    intelligence, such as problem-solving and decision-making. AI
+    research includes learning, knowledge representation, and
+    natural language processing, with applications in web search
+    engines, strategy games, and image generation. The field has
+    gone through cycles of optimism and disappointment, but has seen
+    significant growth and advances in recent years.
+  Key questions:
+     1. What are the main goals of artificial intelligence research?
+     2. How has the field of artificial intelligence evolved over
+     time?
+     3. What are some of the potential risks and challenges
+     associated with the development of artificial intelligence?
+
+SOURCE: https://en.wikipedia.org/wiki/Machine_learning
+  Type   : url
+  Chunks : 3
+  Dominant sentiment: neutral
+  Summary (chunk 0):
+    Machine learning is a field of study concerned with the
+    development and study of statistical algorithms that can learn
+    from data, generalize to unseen data, and perform tasks without
+    explicit programming language instructions. The field has
+    advanced significantly with the development of deep learning,
+    which has allowed neural networks to surpass many previous
+    machine learning approaches in performance. The history of
+    machine learning roots back to decades of human desire and
+    effort to study human cognitive processes.
+  Key questions:
+     1. What is machine learning and how does it work?
+     2. What are the key applications of machine learning?
+     3. How has the field of machine learning evolved over time?
+
+SOURCE: sample_inputs\sample.txt
   Type   : txt
   Chunks : 1
   Dominant sentiment: neutral
   Summary (chunk 0):
-    Artificial intelligence is rapidly transforming industries such as
-    healthcare, finance, transportation, and education, driven by
-    breakthroughs from companies like OpenAI, Google DeepMind, and
-    Anthropic. While AI offers significant benefits-from improved medical
-    diagnosis to personalized learning-it also raises serious ethical and
-    regulatory concerns, including algorithmic bias, labor displacement,
-    and existential risks. Governments and organizations worldwide are
-    responding with legislation such as the EU AI Act and increased
-    investment in AI research and governance.
+    Artificial intelligence is transforming industries worldwide,
+    from healthcare and finance to transportation and education,
+    with companies like OpenAI, Google DeepMind, and Anthropic
+    leading the charge. AI systems are being used to diagnose
+    diseases, detect fraud, and develop autonomous vehicles, but
+    also raise concerns about existential risks, algorithmic bias,
+    and job displacement. Despite these challenges, optimism about
+    AI's potential remains high, with researchers pushing the
+    frontiers of what AI can achieve.
   Key questions:
-     1. How should governments balance AI innovation with regulation to
-     prevent harm while fostering economic growth?
-     2. What concrete measures can organizations take to address
-     algorithmic bias and ensure AI systems are equitable?
-     3. How will the global AI competition between the United States and
-     China shape international relations and technological standards over
-     the next decade?
-
-SOURCE: https://en.wikipedia.org/wiki/Artificial_intelligence
-  Type   : url
-  Chunks : 2
-  Dominant sentiment: neutral
-  Summary (chunk 0):
-    Artificial intelligence is the simulation of human intelligence
-    processes by machines, encompassing capabilities such as learning,
-    reasoning, problem-solving, perception, and language understanding.
-    The field was founded as an academic discipline in the 1950s and has
-    since experienced cycles of optimism, funding cuts known as 'AI
-    winters,' and major revivals driven by advances in computing power and
-    data availability. Modern AI includes narrow AI systems specialized
-    for specific tasks and broader research toward artificial general
-    intelligence.
-  Key questions:
-     1. What distinguishes modern deep learning approaches from earlier
-     symbolic AI methods, and why did the latter fall short?
-     2. How close are researchers to achieving artificial general
-     intelligence, and what technical milestones remain?
-     3. What are the societal implications of increasingly capable AI
-     systems for employment and human autonomy?
-
-SOURCE: https://en.wikipedia.org/wiki/Machine_learning
-  Type   : url
-  Chunks : 1
-  Dominant sentiment: positive
-  Summary (chunk 0):
-    Machine learning is a subset of artificial intelligence that enables
-    computer systems to improve their performance on tasks through
-    experience without being explicitly programmed. It encompasses
-    supervised learning, unsupervised learning, and reinforcement
-    learning, each suited to different types of problems and data
-    availability. The availability of large datasets and powerful GPU
-    hardware has fueled its rapid growth and application across science,
-    business, and government.
-  Key questions:
-     1. What are the key differences between supervised and unsupervised
-     learning, and when should each be used?
-     2. How do overfitting and underfitting affect the reliability of
-     machine learning models in production?
-     3. What ethical considerations should guide the deployment of machine
-     learning systems in high-stakes domains like criminal justice?
-
-========================================================================
-FAILED / SKIPPED SOURCES
-----------------------------------------
-  [SKIPPED] https://this-url-does-not-exist-xyz-12345.com/broken
+     1. What are the potential applications of artificial
+     intelligence in various industries?
+     2. How are companies like OpenAI, Google DeepMind, and
+     Anthropic contributing to the development of AI?
+     3. What are the potential risks and challenges associated with
+     the rise of AI?
 
 ========================================================================
 END OF REPORT

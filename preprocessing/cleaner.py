@@ -42,7 +42,7 @@ def clean_and_chunk(raw_text: str, source: str) -> List[dict]:
         return []
 
     chunks = _chunk(cleaned)
-    logger.info("'%s' → %d chunk(s) after cleaning.", source, len(chunks))
+    logger.info("'%s' -> %d chunk(s) after cleaning.", source, len(chunks))
 
     return [
         {

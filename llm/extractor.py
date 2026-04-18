@@ -1,5 +1,5 @@
 """
-Structured extraction from text chunks using the Gemini API.
+Structured extraction from text chunks using the Groq API (llama-3.3-70b-versatile).
 
 For each chunk, asks the LLM to return a JSON object with:
   - summary       : 2-3 sentence summary of the text
@@ -9,35 +9,41 @@ For each chunk, asks the LLM to return a JSON object with:
 
 Retry strategy (via tenacity):
   - Up to 5 attempts
-  - Exponential backoff: 2 → 4 → 8 → 16 → 32 seconds (capped at 60s)
-  - Retries on any Exception subclass (covers rate limits, timeouts, server errors)
-  - Malformed JSON is caught and repaired via regex; if unfixable, the chunk is skipped.
+  - Exponential backoff: 2 -> 4 -> 8 -> 16 -> 32 seconds (capped at 60s)
+  - Retries on any Exception (covers rate limits, timeouts, server errors)
+  - Malformed JSON is caught and repaired via regex; if unfixable, chunk is skipped.
 """
 
 import json
 import re
 from typing import Optional
 
-import google.generativeai as genai
+from groq import Groq
 from tenacity import (
+    before_sleep_log,
     retry,
     retry_if_exception_type,
     stop_after_attempt,
     wait_exponential,
-    before_sleep_log,
 )
 
+from llm.client import get_model_name
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
+_MODEL = get_model_name()
+
 # -------------------------------------------------------------------------
 # Prompt template
 # -------------------------------------------------------------------------
-_PROMPT_TEMPLATE = """You are a precise information extraction assistant.
-Analyse the following text and return ONLY a valid JSON object — no markdown fences, no extra text.
+_SYSTEM_PROMPT = (
+    "You are a precise information extraction assistant. "
+    "You always respond with valid JSON only — no markdown fences, no extra text, no explanation."
+)
 
-The JSON must have exactly these keys:
+_USER_TEMPLATE = """Analyse the following text and return ONLY a valid JSON object with exactly these keys:
+
 {{
   "summary": "<2 to 3 sentence summary of the text>",
   "entities": {{
@@ -73,27 +79,34 @@ TEXT:
     before_sleep=before_sleep_log(logger, log_level=20),  # 20 = logging.INFO
     reraise=True,
 )
-def _call_api(model: genai.GenerativeModel, prompt: str) -> str:
+def _call_api(client: Groq, prompt: str) -> str:
     """
-    Calls the Gemini API and returns the raw text response.
-    Decorated with tenacity retry — do NOT catch exceptions here;
-    tenacity handles that automatically.
+    Calls the Groq API and returns the raw text response.
+    Tenacity handles retries — do NOT catch exceptions here.
     """
-    response = model.generate_content(prompt)
-    # Accessing .text raises if response was blocked
-    return response.text
+    response = client.chat.completions.create(
+        model=_MODEL,
+        messages=[
+            {"role": "system", "content": _SYSTEM_PROMPT},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.1,        # low temperature -> consistent structured output
+        max_tokens=1024,
+        response_format={"type": "json_object"},  # Groq JSON mode
+    )
+    return response.choices[0].message.content
 
 
 # -------------------------------------------------------------------------
 # Public extraction function
 # -------------------------------------------------------------------------
-def extract_from_chunk(chunk: dict, model: genai.GenerativeModel) -> Optional[dict]:
+def extract_from_chunk(chunk: dict, client: Groq) -> Optional[dict]:
     """
     Extracts structured information from a single chunk dict.
 
     Args:
-        chunk: dict with at least "text", "source", "chunk_index", "total_chunks"
-        model: configured Gemini GenerativeModel instance
+        chunk : dict with at least "text", "source", "chunk_index", "total_chunks"
+        client: configured Groq client instance
 
     Returns:
         A result dict merging chunk metadata with extracted fields, or None on failure.
@@ -103,18 +116,21 @@ def extract_from_chunk(chunk: dict, model: genai.GenerativeModel) -> Optional[di
     text = chunk.get("text", "")
 
     if not text.strip():
-        logger.warning("Empty text for chunk %d from '%s' — skipping.", chunk_index, source)
+        logger.warning("Empty text for chunk %d from '%s' -- skipping.", chunk_index, source)
         return None
 
-    prompt = _PROMPT_TEMPLATE.format(text=text[:8000])  # hard safety trim
+    prompt = _USER_TEMPLATE.format(text=text[:6000])  # hard safety trim
 
     raw_json: Optional[str] = None
     try:
-        raw_json = _call_api(model, prompt)
-        logger.debug("Raw LLM response for chunk %d from '%s': %s", chunk_index, source, raw_json[:200])
+        raw_json = _call_api(client, prompt)
+        logger.debug(
+            "Raw LLM response for chunk %d from '%s': %s",
+            chunk_index, source, raw_json[:200],
+        )
     except Exception as exc:
         logger.error(
-            "LLM API permanently failed for chunk %d from '%s' after retries: %s",
+            "Groq API permanently failed for chunk %d from '%s' after retries: %s",
             chunk_index, source, exc,
         )
         return None
@@ -123,7 +139,6 @@ def extract_from_chunk(chunk: dict, model: genai.GenerativeModel) -> Optional[di
     if extracted is None:
         return None
 
-    # Validate and normalise the extracted structure
     extracted = _normalise(extracted)
 
     return {
@@ -149,7 +164,10 @@ def _parse_json(raw: str, source: str, chunk_index: int) -> Optional[dict]:
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
-        logger.debug("Direct JSON parse failed for chunk %d from '%s'; trying regex repair.", chunk_index, source)
+        logger.debug(
+            "Direct JSON parse failed for chunk %d from '%s'; trying regex repair.",
+            chunk_index, source,
+        )
 
     # Attempt 2: extract the first {...} block via regex
     match = re.search(r"\{.*\}", raw, re.DOTALL)
@@ -163,7 +181,7 @@ def _parse_json(raw: str, source: str, chunk_index: int) -> Optional[dict]:
             )
 
     logger.error(
-        "Could not parse JSON from LLM response for chunk %d from '%s'. Skipping chunk.\nRaw: %s",
+        "Could not parse JSON from LLM response for chunk %d from '%s'. Skipping.\nRaw: %s",
         chunk_index, source, raw[:500],
     )
     return None
@@ -173,15 +191,10 @@ def _parse_json(raw: str, source: str, chunk_index: int) -> Optional[dict]:
 # Structure normalisation
 # -------------------------------------------------------------------------
 def _normalise(data: dict) -> dict:
-    """
-    Ensures all required keys exist with sensible defaults,
-    so downstream code never has to handle KeyError.
-    """
-    # summary
+    """Ensures all required keys exist with sensible defaults."""
     if not isinstance(data.get("summary"), str):
         data["summary"] = ""
 
-    # entities
     entities = data.get("entities", {})
     if not isinstance(entities, dict):
         entities = {}
@@ -191,7 +204,6 @@ def _normalise(data: dict) -> dict:
         "organizations": _ensure_str_list(entities.get("organizations")),
     }
 
-    # sentiment
     sentiment = data.get("sentiment", {})
     if not isinstance(sentiment, dict):
         sentiment = {}
@@ -205,7 +217,6 @@ def _normalise(data: dict) -> dict:
         confidence = 0.0
     data["sentiment"] = {"label": label, "confidence": confidence}
 
-    # questions
     data["questions"] = _ensure_str_list(data.get("questions"))[:3]
 
     return data

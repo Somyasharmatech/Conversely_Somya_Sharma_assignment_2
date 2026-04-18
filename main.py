@@ -14,12 +14,13 @@ The pipeline:
 
 import argparse
 import sys
+import time
 from pathlib import Path
 from typing import List
 
 from ingestion.file_ingestor import ingest_file
 from ingestion.url_ingestor import ingest_urls_from_file
-from llm.client import get_model
+from llm.client import get_client
 from llm.extractor import extract_from_chunk
 from preprocessing.cleaner import clean_and_chunk
 from storage.csv_writer import write_csv
@@ -50,6 +51,13 @@ def parse_args() -> argparse.Namespace:
         default="output",
         help="Output directory for results (default: output/).",
     )
+    parser.add_argument(
+        "--max-chunks",
+        metavar="N",
+        type=int,
+        default=3,
+        help="Max chunks to process per source (default: 3). Use 0 for unlimited.",
+    )
     args = parser.parse_args()
 
     if not args.file and not args.urls:
@@ -58,19 +66,27 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
-def run_pipeline(file_path: str = None, urls_path: str = None, output_dir: str = "output") -> None:
+def run_pipeline(
+    file_path: str = None,
+    urls_path: str = None,
+    output_dir: str = "output",
+    max_chunks: int = 3,
+) -> None:
+    INTER_CHUNK_DELAY = 5  # seconds between LLM calls -- stays well under 15 req/min
+
     logger.info("=" * 60)
     logger.info("Pipeline starting.")
-    logger.info("  File   : %s", file_path or "none")
-    logger.info("  URLs   : %s", urls_path or "none")
-    logger.info("  Output : %s", output_dir)
+    logger.info("  File       : %s", file_path or "none")
+    logger.info("  URLs       : %s", urls_path or "none")
+    logger.info("  Output     : %s", output_dir)
+    logger.info("  Max chunks : %s per source", max_chunks if max_chunks > 0 else "unlimited")
     logger.info("=" * 60)
 
     # ------------------------------------------------------------------
-    # Step 1: Initialise LLM model (fail fast if API key missing)
+    # Step 1: Initialise LLM client (fail fast if API key missing)
     # ------------------------------------------------------------------
     try:
-        model = get_model()
+        client = get_client()
     except EnvironmentError as exc:
         logger.critical("Cannot start pipeline: %s", exc)
         sys.exit(1)
@@ -110,9 +126,18 @@ def run_pipeline(file_path: str = None, urls_path: str = None, output_dir: str =
             # Attach source_type to each chunk
             for chunk in chunks:
                 chunk["source_type"] = doc.get("source_type", "unknown")
+
+            # Cap chunks per source to avoid quota exhaustion on large pages
+            if max_chunks > 0 and len(chunks) > max_chunks:
+                logger.info(
+                    "Capping '%s' to %d/%d chunks (use --max-chunks 0 for all).",
+                    source, max_chunks, len(chunks),
+                )
+                chunks = chunks[:max_chunks]
+
             all_chunks.extend(chunks)
         except Exception as exc:
-            logger.error("Chunking failed for '%s': %s — skipping.", source, exc)
+            logger.error("Chunking failed for '%s': %s -- skipping.", source, exc)
             failed_sources.append(source)
 
     if not all_chunks:
@@ -130,11 +155,11 @@ def run_pipeline(file_path: str = None, urls_path: str = None, output_dir: str =
         source = chunk["source"]
         chunk_idx = chunk["chunk_index"]
         logger.info(
-            "Processing chunk %d/%d — source: '%s' (chunk %d/%d)",
+            "Processing chunk %d/%d -- source: '%s' (chunk %d/%d)",
             i + 1, len(all_chunks), source, chunk_idx + 1, chunk["total_chunks"],
         )
         try:
-            result = extract_from_chunk(chunk, model)
+            result = extract_from_chunk(chunk, client)
             if result:
                 results.append(result)
             else:
@@ -142,10 +167,14 @@ def run_pipeline(file_path: str = None, urls_path: str = None, output_dir: str =
                 if source not in failed_sources:
                     failed_sources.append(source)
         except Exception as exc:
-            # extract_from_chunk already handles retries and logs; this is a safety net
             logger.error("Unexpected error processing chunk %d from '%s': %s", chunk_idx, source, exc)
             if source not in failed_sources:
                 failed_sources.append(source)
+
+        # Rate-limit guard: sleep between requests (skip after the last chunk)
+        if i < len(all_chunks) - 1:
+            logger.debug("Waiting %ds before next chunk (rate-limit guard)...", INTER_CHUNK_DELAY)
+            time.sleep(INTER_CHUNK_DELAY)
 
     logger.info("Extraction complete: %d results, %d failed/skipped sources.", len(results), len(failed_sources))
 
@@ -171,6 +200,7 @@ def main() -> None:
         file_path=args.file,
         urls_path=args.urls,
         output_dir=args.output,
+        max_chunks=args.max_chunks,
     )
 
 

@@ -1,44 +1,46 @@
 """
-Gemini API client setup.
-Reads GEMINI_API_KEY from the environment (via .env) and configures the SDK.
+Groq API client setup.
+Reads GROQ_API_KEY from the environment (via .env) and returns a configured client.
 No API keys are ever hardcoded here.
+
+Why Groq?
+  - Free tier: 14,400 requests/day, 6,000 tokens/min with llama-3.3-70b-versatile
+  - No billing setup required — works immediately after signup
+  - Direct REST API via the official groq-python SDK (no orchestration framework)
 """
 
 import os
 
-import google.generativeai as genai
+from groq import Groq
 from dotenv import load_dotenv
 
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-# Load .env if present (ignored silently in production where env vars are set directly)
+# Load .env if present
 load_dotenv()
 
-_MODEL_NAME = "gemini-1.5-flash"
+_MODEL_NAME = "llama-3.3-70b-versatile"
 
 
-def get_model() -> genai.GenerativeModel:
+def get_client() -> Groq:
     """
-    Initialises and returns a configured Gemini GenerativeModel instance.
-    Raises EnvironmentError if GEMINI_API_KEY is not set.
+    Initialises and returns a configured Groq client.
+    Raises EnvironmentError if GROQ_API_KEY is not set.
     """
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
         raise EnvironmentError(
-            "GEMINI_API_KEY environment variable is not set. "
-            "Copy .env.example to .env and add your key, or set the environment variable directly."
+            "GROQ_API_KEY environment variable is not set. "
+            "Copy .env.example to .env and add your key, or set the variable directly. "
+            "Get a free key at https://console.groq.com/keys"
         )
 
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(
-        model_name=_MODEL_NAME,
-        generation_config=genai.types.GenerationConfig(
-            response_mime_type="application/json",
-            temperature=0.2,          # low temperature → consistent structured output
-            max_output_tokens=1024,
-        ),
-    )
-    logger.debug("Gemini model '%s' initialised.", _MODEL_NAME)
-    return model
+    client = Groq(api_key=api_key)
+    logger.debug("Groq client initialised with model '%s'.", _MODEL_NAME)
+    return client
+
+
+def get_model_name() -> str:
+    return _MODEL_NAME
