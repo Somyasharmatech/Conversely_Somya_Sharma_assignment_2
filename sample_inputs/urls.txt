@@ -1,0 +1,7 @@
+# URL list for pipeline testing
+# One URL per line. Lines starting with # are ignored.
+
+https://en.wikipedia.org/wiki/Artificial_intelligence
+https://en.wikipedia.org/wiki/Machine_learning
+# Intentionally broken URL to test failure handling:
+https://this-url-does-not-exist-xyz-12345.com/broken

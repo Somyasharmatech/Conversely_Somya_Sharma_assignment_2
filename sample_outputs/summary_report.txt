@@ -1,0 +1,100 @@
+========================================================================
+  LLM DATA PIPELINE — SUMMARY REPORT
+========================================================================
+
+OVERVIEW
+----------------------------------------
+Total sources processed : 3
+Total chunks extracted  : 4
+Failed sources          : 1
+
+SENTIMENT DISTRIBUTION
+----------------------------------------
+  Positive  :    2 chunks  (50.0%)
+  Neutral   :    2 chunks  (50.0%)
+  Negative  :    0 chunks  (0.0%)
+
+TOP ENTITIES (across all sources)
+----------------------------------------
+  People        : Elon Musk, Alan Turing, John McCarthy, Garry Kasparov, Lee Sedol, Arthur Samuel, Tom Mitchell, Marvin Minsky, Geoffrey Hinton, Yann LeCun
+  Places        : New York, London, Mumbai, San Francisco, Dartmouth, United States, United Kingdom, Oxford
+  Organizations : OpenAI, Google DeepMind, IBM, Microsoft, Google, DeepMind, Anthropic, Tesla, Waymo, Nvidia
+
+========================================================================
+PER-SOURCE DETAILS
+========================================================================
+
+SOURCE: sample_inputs/sample.txt
+  Type   : txt
+  Chunks : 1
+  Dominant sentiment: neutral
+  Summary (chunk 0):
+    Artificial intelligence is rapidly transforming industries such as
+    healthcare, finance, transportation, and education, driven by
+    breakthroughs from companies like OpenAI, Google DeepMind, and
+    Anthropic. While AI offers significant benefits-from improved medical
+    diagnosis to personalized learning-it also raises serious ethical and
+    regulatory concerns, including algorithmic bias, labor displacement,
+    and existential risks. Governments and organizations worldwide are
+    responding with legislation such as the EU AI Act and increased
+    investment in AI research and governance.
+  Key questions:
+     1. How should governments balance AI innovation with regulation to
+     prevent harm while fostering economic growth?
+     2. What concrete measures can organizations take to address
+     algorithmic bias and ensure AI systems are equitable?
+     3. How will the global AI competition between the United States and
+     China shape international relations and technological standards over
+     the next decade?
+
+SOURCE: https://en.wikipedia.org/wiki/Artificial_intelligence
+  Type   : url
+  Chunks : 2
+  Dominant sentiment: neutral
+  Summary (chunk 0):
+    Artificial intelligence is the simulation of human intelligence
+    processes by machines, encompassing capabilities such as learning,
+    reasoning, problem-solving, perception, and language understanding.
+    The field was founded as an academic discipline in the 1950s and has
+    since experienced cycles of optimism, funding cuts known as 'AI
+    winters,' and major revivals driven by advances in computing power and
+    data availability. Modern AI includes narrow AI systems specialized
+    for specific tasks and broader research toward artificial general
+    intelligence.
+  Key questions:
+     1. What distinguishes modern deep learning approaches from earlier
+     symbolic AI methods, and why did the latter fall short?
+     2. How close are researchers to achieving artificial general
+     intelligence, and what technical milestones remain?
+     3. What are the societal implications of increasingly capable AI
+     systems for employment and human autonomy?
+
+SOURCE: https://en.wikipedia.org/wiki/Machine_learning
+  Type   : url
+  Chunks : 1
+  Dominant sentiment: positive
+  Summary (chunk 0):
+    Machine learning is a subset of artificial intelligence that enables
+    computer systems to improve their performance on tasks through
+    experience without being explicitly programmed. It encompasses
+    supervised learning, unsupervised learning, and reinforcement
+    learning, each suited to different types of problems and data
+    availability. The availability of large datasets and powerful GPU
+    hardware has fueled its rapid growth and application across science,
+    business, and government.
+  Key questions:
+     1. What are the key differences between supervised and unsupervised
+     learning, and when should each be used?
+     2. How do overfitting and underfitting affect the reliability of
+     machine learning models in production?
+     3. What ethical considerations should guide the deployment of machine
+     learning systems in high-stakes domains like criminal justice?
+
+========================================================================
+FAILED / SKIPPED SOURCES
+----------------------------------------
+  [SKIPPED] https://this-url-does-not-exist-xyz-12345.com/broken
+
+========================================================================
+END OF REPORT
+========================================================================

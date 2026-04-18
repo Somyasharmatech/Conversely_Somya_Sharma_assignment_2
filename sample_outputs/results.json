@@ -1,0 +1,90 @@
+[
+  {
+    "source": "sample_inputs/sample.txt",
+    "source_type": "txt",
+    "chunk_index": 0,
+    "total_chunks": 1,
+    "token_count": 687,
+    "summary": "Artificial intelligence is rapidly transforming industries such as healthcare, finance, transportation, and education, driven by breakthroughs from companies like OpenAI, Google DeepMind, and Anthropic. While AI offers significant benefits—from improved medical diagnosis to personalized learning—it also raises serious ethical and regulatory concerns, including algorithmic bias, labor displacement, and existential risks. Governments and organizations worldwide are responding with legislation such as the EU AI Act and increased investment in AI research and governance.",
+    "entities": {
+      "people": ["Elon Musk"],
+      "places": ["New York", "London", "Mumbai", "San Francisco", "Phoenix", "Singapore", "Finland", "South Korea", "Beijing", "Washington D.C.", "Oxford"],
+      "organizations": ["OpenAI", "Google DeepMind", "Anthropic", "Johns Hopkins Hospital", "Mayo Clinic", "JPMorgan Chase", "Goldman Sachs", "BlackRock", "Tesla", "Waymo", "Uber", "Khan Academy", "Duolingo", "Future of Humanity Institute", "Baidu", "Alibaba", "Tencent", "AI Now Institute", "Electronic Frontier Foundation", "MIT", "Stanford University", "Carnegie Mellon University"]
+    },
+    "sentiment": {
+      "label": "neutral",
+      "confidence": 0.78
+    },
+    "questions": [
+      "How should governments balance AI innovation with regulation to prevent harm while fostering economic growth?",
+      "What concrete measures can organizations take to address algorithmic bias and ensure AI systems are equitable?",
+      "How will the global AI competition between the United States and China shape international relations and technological standards over the next decade?"
+    ]
+  },
+  {
+    "source": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+    "source_type": "url",
+    "chunk_index": 0,
+    "total_chunks": 3,
+    "token_count": 1987,
+    "summary": "Artificial intelligence is the simulation of human intelligence processes by machines, encompassing capabilities such as learning, reasoning, problem-solving, perception, and language understanding. The field was founded as an academic discipline in the 1950s and has since experienced cycles of optimism, funding cuts known as 'AI winters,' and major revivals driven by advances in computing power and data availability. Modern AI includes narrow AI systems specialized for specific tasks and broader research toward artificial general intelligence.",
+    "entities": {
+      "people": ["Alan Turing", "John McCarthy", "Marvin Minsky", "Geoffrey Hinton", "Yann LeCun"],
+      "places": ["Dartmouth", "United States", "United Kingdom"],
+      "organizations": ["Google", "Microsoft", "IBM", "DeepMind", "OpenAI"]
+    },
+    "sentiment": {
+      "label": "neutral",
+      "confidence": 0.85
+    },
+    "questions": [
+      "What distinguishes modern deep learning approaches from earlier symbolic AI methods, and why did the latter fall short?",
+      "How close are researchers to achieving artificial general intelligence, and what technical milestones remain?",
+      "What are the societal implications of increasingly capable AI systems for employment and human autonomy?"
+    ]
+  },
+  {
+    "source": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+    "source_type": "url",
+    "chunk_index": 1,
+    "total_chunks": 3,
+    "token_count": 1823,
+    "summary": "AI applications span a wide range of domains including natural language processing, computer vision, robotics, and game playing, with landmark achievements such as Deep Blue defeating Garry Kasparov in chess and AlphaGo defeating Lee Sedol in Go. Machine learning, and particularly deep learning with neural networks, has become the dominant paradigm, enabling AI systems to learn patterns from large datasets without explicit programming. These advances have powered consumer products like virtual assistants, recommendation systems, and autonomous vehicles.",
+    "entities": {
+      "people": ["Garry Kasparov", "Lee Sedol"],
+      "places": [],
+      "organizations": ["IBM", "Google DeepMind", "Nvidia"]
+    },
+    "sentiment": {
+      "label": "positive",
+      "confidence": 0.72
+    },
+    "questions": [
+      "How do reinforcement learning techniques used in games like Go translate to real-world decision-making problems?",
+      "What data privacy risks arise from training large AI models on massive internet datasets?",
+      "To what extent should AI systems be explainable, and who bears responsibility when they make harmful errors?"
+    ]
+  },
+  {
+    "source": "https://en.wikipedia.org/wiki/Machine_learning",
+    "source_type": "url",
+    "chunk_index": 0,
+    "total_chunks": 2,
+    "token_count": 1956,
+    "summary": "Machine learning is a subset of artificial intelligence that enables computer systems to improve their performance on tasks through experience without being explicitly programmed. It encompasses supervised learning, unsupervised learning, and reinforcement learning, each suited to different types of problems and data availability. The availability of large datasets and powerful GPU hardware has fueled its rapid growth and application across science, business, and government.",
+    "entities": {
+      "people": ["Arthur Samuel", "Tom Mitchell"],
+      "places": [],
+      "organizations": ["Google", "Facebook", "Amazon", "Apple", "Microsoft"]
+    },
+    "sentiment": {
+      "label": "positive",
+      "confidence": 0.69
+    },
+    "questions": [
+      "What are the key differences between supervised and unsupervised learning, and when should each be used?",
+      "How do overfitting and underfitting affect the reliability of machine learning models in production?",
+      "What ethical considerations should guide the deployment of machine learning systems in high-stakes domains like criminal justice?"
+    ]
+  }
+]
