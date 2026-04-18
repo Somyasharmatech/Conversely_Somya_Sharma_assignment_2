@@ -59,9 +59,11 @@ SOURCE: https://en.wikipedia.org/wiki/Machine_learning
     machine learning roots back to decades of human desire and
     effort to study human cognitive processes.
   Key questions:
-     1. What is machine learning and how does it work?
-     2. What are the key applications of machine learning?
-     3. How has the field of machine learning evolved over time?
+     1. What is machine learning?
+     2. How has deep learning impacted the field of machine
+     learning?
+     3. Who are some key researchers that have contributed to the
+     development of machine learning?
 
 SOURCE: sample_inputs\sample.txt
   Type   : txt
@@ -70,18 +72,16 @@ SOURCE: sample_inputs\sample.txt
   Summary (chunk 0):
     Artificial intelligence is transforming industries worldwide,
     from healthcare and finance to transportation and education,
-    with companies like OpenAI, Google DeepMind, and Anthropic
-    leading the charge. AI systems are being used to diagnose
-    diseases, detect fraud, and develop autonomous vehicles, but
-    also raise concerns about existential risks, algorithmic bias,
-    and job displacement. Despite these challenges, optimism about
-    AI's potential remains high, with researchers pushing the
-    frontiers of what AI can achieve.
+    with companies like OpenAI and Google DeepMind leading the
+    charge. AI systems are being used to diagnose diseases, detect
+    fraud, and develop autonomous vehicles. However, the rise of AI
+    has also sparked debate about existential risks and ethical
+    concerns.
   Key questions:
      1. What are the potential applications of artificial
      intelligence in various industries?
-     2. How are companies like OpenAI, Google DeepMind, and
-     Anthropic contributing to the development of AI?
+     2. How are companies like OpenAI and Google DeepMind
+     contributing to the development of AI?
      3. What are the potential risks and challenges associated with
      the rise of AI?
 

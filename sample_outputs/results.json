@@ -5,7 +5,7 @@
     "chunk_index": 0,
     "total_chunks": 1,
     "token_count": 703,
-    "summary": "Artificial intelligence is transforming industries worldwide, from healthcare and finance to transportation and education, with companies like OpenAI, Google DeepMind, and Anthropic leading the charge. AI systems are being used to diagnose diseases, detect fraud, and develop autonomous vehicles, but also raise concerns about existential risks, algorithmic bias, and job displacement. Despite these challenges, optimism about AI's potential remains high, with researchers pushing the frontiers of what AI can achieve.",
+    "summary": "Artificial intelligence is transforming industries worldwide, from healthcare and finance to transportation and education, with companies like OpenAI and Google DeepMind leading the charge. AI systems are being used to diagnose diseases, detect fraud, and develop autonomous vehicles. However, the rise of AI has also sparked debate about existential risks and ethical concerns.",
     "entities": {
       "people": [
         "Elon Musk"
@@ -41,7 +41,6 @@
         "Uber",
         "Khan Academy",
         "Duolingo",
-        "National Highway Traffic Safety Administration",
         "Future of Humanity Institute",
         "University of Oxford",
         "European Union",
@@ -61,7 +60,7 @@
     },
     "questions": [
       "What are the potential applications of artificial intelligence in various industries?",
-      "How are companies like OpenAI, Google DeepMind, and Anthropic contributing to the development of AI?",
+      "How are companies like OpenAI and Google DeepMind contributing to the development of AI?",
       "What are the potential risks and challenges associated with the rise of AI?"
     ]
   },
@@ -98,7 +97,7 @@
     "chunk_index": 1,
     "total_chunks": 26,
     "token_count": 2000,
-    "summary": "The text discusses various types of machine learning, including classification, regression, and reinforcement learning, as well as natural language processing and machine perception. It also touches on affective computing, social intelligence, and general intelligence. The text highlights the use of techniques such as search and optimization, local search, and formal logic in AI research.",
+    "summary": "The text discusses various types of machine learning, including classification, regression, and reinforcement learning, as well as natural language processing and machine perception. It also touches on affective computing, general intelligence, and techniques used in AI research, such as search and optimization, formal logic, and deductive reasoning.",
     "entities": {
       "people": [
         "Noam Chomsky",
@@ -123,7 +122,7 @@
     "chunk_index": 2,
     "total_chunks": 26,
     "token_count": 2000,
-    "summary": "The text discusses various artificial intelligence techniques, including machine learning, deep learning, and neural networks, and their applications in areas such as image processing, natural language processing, and computer vision. It also touches on the use of large language models like GPT and their limitations. The text highlights the importance of training data and computational power in the development of AI systems.",
+    "summary": "The text discusses various artificial intelligence techniques, including machine learning, deep learning, and neural networks, and their applications in areas such as image processing, natural language processing, and computer vision. It also touches on the history and development of these techniques, as well as their limitations and potential biases. Additionally, it mentions specific models and services, such as GPT and Gemini, and their capabilities and challenges.",
     "entities": {
       "people": [],
       "places": [],
@@ -139,7 +138,7 @@
     "questions": [
       "What are the main types of artificial intelligence applications?",
       "How do neural networks learn to model complex relationships between inputs and outputs?",
-      "What are the limitations of large language models like GPT?"
+      "What are the limitations and challenges of current GPT models?"
     ]
   },
   {
@@ -166,9 +165,9 @@
       "confidence": 0.8
     },
     "questions": [
-      "What is machine learning and how does it work?",
-      "What are the key applications of machine learning?",
-      "How has the field of machine learning evolved over time?"
+      "What is machine learning?",
+      "How has deep learning impacted the field of machine learning?",
+      "Who are some key researchers that have contributed to the development of machine learning?"
     ]
   },
   {
@@ -219,7 +218,7 @@
     "questions": [
       "What is the main goal of machine learning?",
       "How does supervised learning differ from unsupervised learning?",
-      "What are some common applications of unsupervised machine learning?"
+      "What are some common applications of cluster analysis in machine learning?"
     ]
   }
 ]
